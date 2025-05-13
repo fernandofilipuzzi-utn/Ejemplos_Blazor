@@ -1,0 +1,11 @@
+﻿@page "/"
+@using Microsoft.AspNetCore.Authorization
+
+<PageTitle>Home</PageTitle>
+
+@attribute [Authorize]
+
+@attribute [StreamRendering]
+@rendermode InteractiveServer
+
+Welcome to your new app.

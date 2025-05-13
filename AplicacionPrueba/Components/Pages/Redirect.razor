@@ -1,0 +1,29 @@
+﻿@page "/redirect"
+
+<PageTitle>Home</PageTitle>
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+
+@code
+{
+    [Inject]
+    private NavigationManager NavigationManager { get; set; }
+
+    //ejemplo
+    //https://localhost:7020/redirect/?redirectUrl=https://www.google.com
+
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "redirectUrl")]
+    public string? RedirectUrl { get; set; }
+
+    protected override void OnInitialized()
+    {
+        if (!string.IsNullOrEmpty(RedirectUrl))
+        {
+            NavigationManager.NavigateTo(RedirectUrl, forceLoad: true);
+        }
+    }
+}

@@ -1,0 +1,84 @@
+﻿@page "/login"
+
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Authentication.Cookies
+@using Microsoft.AspNetCore.Authentication
+
+
+
+<h3>Login</h3>
+
+<div class="content">
+
+    @if(mostrarMensaje)
+    {
+        <div class="alert-danger">@mensaje</div>
+    }
+
+    <EditForm Model="loginModel"  OnValidSubmit="OnLogin" FormName="login" >
+
+        <DataAnnotationsValidator /> 
+        <ValidationSummary />       
+
+        <InputText class="form-control" @bind-Value="loginModel.Usuario"/>
+        <ValidationMessage For="@(() => loginModel.Usuario)" /> @* Muestra error de validación para Usuario *@
+
+        <InputText class="form-control" @bind-Value="loginModel.Clave" />
+        <ValidationMessage For="@(() => loginModel.Clave)" />  @* Muestra error de validación para Clave *@
+
+        <button type="submit" class="btn btn-primary">Ingresar</button>
+    </EditForm>
+
+</div>
+
+@code {
+
+    LoginModel loginModel { get; set; } = new();
+    
+    string mensaje;
+    bool mostrarMensaje { get; set; } = false;
+
+    [Inject]
+    private NavigationManager Navigation { get; set; }
+    [Inject]
+    private IHttpContextAccessor HttpContextAccessor { get; set; }
+
+    async private Task OnLogin()
+    {
+        mostrarMensaje = false;
+        if (loginModel.Usuario != "admin" && loginModel.Clave != "123")
+        {
+            mostrarMensaje = true;
+            mensaje = "usuario o claves incorrectos";
+            return;
+        }
+
+
+        var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.Name, loginModel.Usuario)
+        };
+
+        var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+        var principal = new ClaimsPrincipal(identity);
+
+        var httpContext = HttpContextAccessor.HttpContext;
+        if (httpContext != null)
+        {
+            //es necesario la using @using Microsoft.AspNetCore.Authentication
+            await httpContext?.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+            Navigation.NavigateTo("/"); 
+        }
+        else
+        {
+            mensaje = "No se pudo iniciar sesión debido a un error interno.";
+        }
+    }
+
+
+    class LoginModel
+    {
+        public string Usuario { get; set; }
+        public string Clave { get; set; }
+    }
+}

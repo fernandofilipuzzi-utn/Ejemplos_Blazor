@@ -1,0 +1,47 @@
+﻿@page "/personas"
+
+@using EjemploPersonasData.Models
+
+<h3>Personas</h3>
+
+@attribute [StreamRendering]
+@rendermode InteractiveServer
+
+@if (personasModels == null)
+{
+    <div class="alert">Iniciando...</div>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>DNI</th>
+                <th>Nombre</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var personaModel in personasModels)
+            {
+                <tr>
+                    <td>@personaModel.Id</td>
+                    <td>@personaModel.DNI</td>
+                    <td>@personaModel.Nombre</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+@code 
+{
+    List<PersonaModel?>? personasModels = null;
+
+    async protected override Task OnInitializedAsync()
+    {
+        personasModels=await _PersonasService.GetAll();
+
+        await base.OnInitializedAsync();
+    }
+}

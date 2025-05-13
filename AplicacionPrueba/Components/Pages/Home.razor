@@ -1,0 +1,31 @@
+﻿@page "/"
+
+<PageTitle>Home</PageTitle>
+
+@attribute [StreamRendering]
+@rendermode InteractiveServer
+
+<div class="content">
+
+    <InputText @bind-Value="url" class="form-control"></InputText>
+    <button @onclick="OnRedirect" class="btn btn-primary">Redireccionar</button>>
+</div>
+
+
+@code
+{
+    string url { get; set; }
+
+    [Inject]
+    private NavigationManager NavigationManager { get; set; }
+
+    private void OnRedirect()
+    {
+        if (!string.IsNullOrEmpty(url))
+        {
+            NavigationManager.NavigateTo(url, forceLoad: true);
+        }
+    }
+
+   
+}
