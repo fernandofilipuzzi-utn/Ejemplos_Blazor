@@ -38,6 +38,6 @@ public class PersonaViewModel
     [Required(ErrorMessage ="Debe ingresar el nombre")]
     public string Nombre { get; set; }
 
-    [Required(ErrorMessage = "Escribí una breve descripción de tu actividad.")]
+    [Required(ErrorMessage = "Debe ingresar DNI")]
     public string DNI { get; set; }
 }

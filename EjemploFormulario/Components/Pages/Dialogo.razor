@@ -1,0 +1,129 @@
+﻿@page "/dialogo"
+
+@using System.ComponentModel.DataAnnotations
+<h3>Dialprogo</h3>
+
+@attribute [StreamRendering]
+@rendermode InteractiveServer
+
+<div class="row">
+    <button @onclick="OnEtapa1" class="btn @classActive1 col-3">Etapa 1</button>
+    <button @onclick="OnEtapa2" class="btn @classActive2 col-3">Etapa 2</button>
+    <button @onclick="OnEtapa3" class="btn @classActive3 col-3">Etapa 3</button>
+</div>
+
+<h1>Etapa @etapa</h1>
+
+@if (etapa == 1)
+{
+    <EditForm Model="etapa1ViewModel" OnValidSubmit="OnEtapa2" FormName="etapa1">
+
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="form-group">
+            <InputText @bind-Value="etapa1ViewModel.Campo1" class="form-control" />
+            <ValidationMessage For="@(() => etapa1ViewModel.Campo1)" />
+        </div>
+
+        
+        <button type="submit" class="btn btn-primary">Siguiente</button>
+    </EditForm>
+}
+else @if (etapa == 2)
+{
+    <EditForm Model="etapa2ViewModel" OnValidSubmit="OnEtapa3" FormName="etapa2">
+
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="form-group">
+            <InputText @bind-Value="etapa2ViewModel.Campo1" class="form-control" />
+            <ValidationMessage For="@(() => etapa1ViewModel.Campo1)" />
+        </div>
+
+        <button @onclick="OnEtapa1" class="btn btn-primary">Anterior</button>
+        <button type="submit" class="btn btn-primary">Siguiente</button>
+    </EditForm>
+}
+else @if (etapa == 3)
+{
+    <EditForm Model="etapa3ViewModel" OnValidSubmit="OnFinalizar" FormName="etapa3">
+
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="form-group">
+            <InputText @bind-Value="etapa3ViewModel.Campo1" class="form-control" />
+            <ValidationMessage For="@(() => etapa1ViewModel.Campo1)" />
+        </div>
+
+        <button @onclick="OnEtapa2" class="btn btn-primary">Anterior</button>
+        <button type="submit" class="btn btn-primary">Finalizar</button>
+    </EditForm>
+}
+
+@code {
+    int etapa = 1;
+    string classActive1, classActive2, classActive3;
+
+    Etapa1ViewModel etapa1ViewModel = new();
+    Etapa2ViewModel etapa2ViewModel = new();
+    Etapa3ViewModel etapa3ViewModel = new();
+
+
+    protected override Task OnInitializedAsync()
+    {
+        OnEtapa1();
+        return base.OnInitializedAsync();
+    }
+
+    protected void OnEtapa1()
+    {
+        etapa = 1;
+        classActive1 = "btn-primary";
+        classActive2 = "btn-dark";
+        classActive3 = "btn-dark";
+    }
+
+    protected void OnEtapa2()
+    {
+        etapa = 2;
+        classActive2 = "btn-primary";
+        classActive1 = "btn-dark";
+        classActive3 = "btn-dark";
+    }
+
+    protected void OnEtapa3()
+    {
+        etapa = 3;
+        classActive3 = "btn-primary";
+        classActive1 = "btn-dark";
+        classActive2 = "btn-dark";
+    }
+
+    protected void OnFinalizar()
+    {
+    }
+
+
+    #region view models
+    class Etapa1ViewModel
+    {
+        [Required(ErrorMessage = "Debe ingresar el campo1")]
+        public string Campo1 { get; set; }
+    }
+
+    class Etapa2ViewModel
+    {
+        [Required(ErrorMessage = "Debe ingresar el campo1")]
+        public string Campo1 { get; set; }
+    }
+
+    class Etapa3ViewModel
+    {
+        [Required(ErrorMessage = "Debe ingresar el campo1")]
+        public string Campo1 { get; set; }
+    }
+    #endregion
+}

@@ -7,6 +7,8 @@
 @attribute [StreamRendering]
 @rendermode InteractiveServer
 
+@* @inject PersonasService _PersonasService *@
+
 @if (personasModels == null)
 {
     <div class="alert">Iniciando...</div>
@@ -34,14 +36,4 @@ else
 }
 
 
-@code 
-{
-    List<PersonaModel?>? personasModels = null;
 
-    async protected override Task OnInitializedAsync()
-    {
-        personasModels=await _PersonasService.GetAll();
-
-        await base.OnInitializedAsync();
-    }
-}
