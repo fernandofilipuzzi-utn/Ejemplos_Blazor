@@ -6,11 +6,10 @@
 @rendermode InteractiveServer
 
 <div class="content">
-
+    <label class="form-label">Ejemplo: https://www.google.com</label>
     <InputText @bind-Value="url" class="form-control"></InputText>
-    <button @onclick="OnRedirect" class="btn btn-primary">Redireccionar</button>>
+    <button @onclick="OnRedirect" class="btn btn-primary">Redireccionar</button>
 </div>
-
 
 @code
 {
@@ -25,7 +24,5 @@
         {
             NavigationManager.NavigateTo(url, forceLoad: true);
         }
-    }
-
-   
+    }   
 }

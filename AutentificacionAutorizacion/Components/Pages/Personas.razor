@@ -1,9 +1,54 @@
 ﻿@page "/personas"
 
+@attribute [StreamRendering]
+@rendermode InteractiveServer
+
 <h3>Personas</h3>
 
-@attribute [Authorize]
+<div class="content">
+    <EditForm Model="personaModel" OnValidSubmit="OnCrearPersona" FormName="editPersona">
 
-@code {
+        <DataAnnotationsValidator />
+        <ValidationSummary />
 
+        <div class="form-group">
+            <input type="text" @bind="personaModel.Nombre" class="form-control"></input>
+            <ValidationMessage For="@(() => personaModel.Nombre)" />
+        </div>
+
+        <div class="form-group">
+            <InputText @bind-Value="personaModel.DNI" class="form-control" />
+            <ValidationMessage For="@(() => personaModel.DNI)" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Agregar</button>
+    </EditForm>
+</div>
+
+@if (personasModels == null)
+{
+    <div class="alert">Está buscando</div>
 }
+else
+{
+    <table class="table">
+
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>DNI</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var persona in personasModels)
+            {
+                <tr>
+                    <td>@persona.Nombre</td>
+                    <td>@persona.DNI</td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+}
+
