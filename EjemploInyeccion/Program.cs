@@ -54,11 +54,13 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+#region swagger
 //if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+#endregion
 
 app.UseHttpsRedirection();
 

@@ -4,13 +4,16 @@
 
 <h1>Redirect</h1>
 
+@attribute [Authorize]
+
 @attribute [StreamRendering]
 @rendermode InteractiveServer
 
 <div class="content">
     <div class="">
+        
         <div class="form-group">
-            <label class="form-label" for="url">URL:</label>
+            <label class="form-label" for="url">URL: https://localhost:7020/api/Redirect?url=https%3A%2F%2Flocalhost%3A7000%2Fresultado</label>
             <InputText id="url" class="form-control" @bind-Value="RedirectUrl"></InputText>
         </div>
         <button @onclick="OnEnviar">Enviar</button>

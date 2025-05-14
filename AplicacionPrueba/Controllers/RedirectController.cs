@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace AplicacionPrueba.Controller;
+namespace AplicacionPrueba.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
 public class RedirectController : ControllerBase
 {
     [HttpGet]
-    async public Task<IActionResult> GetRedirect(string url)
+    async public Task<IActionResult> Get(string url)
     {
         return Redirect(url);
     }
