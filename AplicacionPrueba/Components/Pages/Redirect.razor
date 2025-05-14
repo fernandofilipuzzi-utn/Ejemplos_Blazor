@@ -16,7 +16,7 @@ Welcome to your new app.
     //https://localhost:7020/redirect/?redirectUrl=https://www.google.com
 
     [Parameter]
-    [SupplyParameterFromQuery(Name = "redirectUrl")]
+    [SupplyParameterFromQuery(Name = "url")]
     public string? RedirectUrl { get; set; }
 
     protected override void OnInitialized()

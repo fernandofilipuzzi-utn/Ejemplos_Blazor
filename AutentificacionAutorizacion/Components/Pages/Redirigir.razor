@@ -1,0 +1,44 @@
+﻿@page "/redirect"
+
+<PageTitle>Home</PageTitle>
+
+<h1>Redirect</h1>
+
+@attribute [StreamRendering]
+@rendermode InteractiveServer
+
+<div class="content">
+    <div class="">
+        <div class="form-group">
+            <label class="form-label" for="url">URL:</label>
+            <InputText id="url" class="form-control" @bind-Value="RedirectUrl"></InputText>
+        </div>
+        <button @onclick="OnEnviar">Enviar</button>
+    </div>
+</div>
+
+@code
+{
+    [Inject]
+    private NavigationManager NavigationManager { get; set; }
+
+    //ejemplo
+    //https://localhost:7020/redirect/?redirectUrl=https://www.google.com
+
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "redirectUrl")]
+    public string? RedirectUrl { get; set; }
+
+    protected override void OnInitialized()
+    {
+       
+    }
+
+    async public Task OnEnviar()
+    {
+        if (!string.IsNullOrEmpty(RedirectUrl))
+        {
+            NavigationManager.NavigateTo(RedirectUrl, forceLoad: true);
+        }
+    }
+}

@@ -1,5 +1,7 @@
 
-# Ver la versi�n del SDK y runtime instalados
+# Ver la versión del SDK y runtime instalados
+
+```bash
 
 C:\Users\fernando\Desktop\PRUEBA\Ejemplos_Blazor\EjemploFormulario>dotnet --info
 SDK DE .NET:
@@ -8,7 +10,7 @@ SDK DE .NET:
  Workload version:  9.0.200-manifests.5591ce44
  MSBuild version:   17.13.25+b1feb5ea6
 
-Entorno de tiempo de ejecuci�n:
+Entorno de tiempo de ejecución:
  OS Name:     Windows
  OS Version:  10.0.19045
  OS Platform: Windows
@@ -150,3 +152,33 @@ PS C:\Users\fernando\Desktop\PRUEBA\Ejemplos_Blazor\EjemploFormulario> dotnet wo
 Manifiesto publicitario actualizado microsoft.net.workload.mono.toolchain.net6
 Manifiesto publicitario actualizado microsoft.net.sdk.ios
 Manifiesto publicitario actualizado microsoft.net.sdk.android
+```
+
+# Si no toma el css 
+
+revisar la versión del sdk
+
+
+```bash
+C:\Users\fernando\Desktop\PRUEBA\Ejemplos_Blazor\EjemploFormulario>dotnet --list-runtimes
+
+...
+Microsoft.AspNetCore.App 8.0.16 [C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App]
+...
+
+```
+
+La versión mostrada es la 8.0.16, para llevarlo a una versión anterior en la que generaba bien los css de la aplicación modificar el archivo de proyecto como sigue.
+
+```xml
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<RuntimeFrameworkVersion>8.0.12</RuntimeFrameworkVersion>
+	</PropertyGroup>
+
+</Project>
+```
