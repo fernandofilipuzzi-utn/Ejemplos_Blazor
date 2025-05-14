@@ -45,6 +45,7 @@ builder.Services.AddCors(options =>
 
 #endregion
 
+#region aplicación
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
@@ -67,3 +68,5 @@ app.UseAntiforgery();
 app.MapRazorComponents<App>().AddInteractiveServerRenderMode();
 
 app.Run();
+
+#endregion
