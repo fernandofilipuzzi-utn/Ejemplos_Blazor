@@ -1,5 +1,9 @@
 ﻿@inherits LayoutComponentBase
 
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Authentication.Cookies
+
 <div class="page">
     <div class="sidebar">
         <NavMenu />
@@ -21,3 +25,19 @@
     <a href="" class="reload">Reload</a>
     <a class="dismiss">🗙</a>
 </div>
+
+
+@code {
+    [Inject] NavigationManager Navigation { get; set; }
+    [Inject] IHttpContextAccessor HttpContextAccessor { get; set; }
+
+    private async Task Logout()
+    {
+        var httpContext = HttpContextAccessor.HttpContext;
+        if (httpContext != null)
+        {
+            await httpContext.SignOutAsync("Cookies");
+            Navigation.NavigateTo("/login", forceLoad: true);
+        }
+    }
+}

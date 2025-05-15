@@ -1,4 +1,9 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Authentication.Cookies
+
+
+<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="">AutentificacionAutorizacion</a>
     </div>
@@ -8,24 +13,63 @@
 
 <div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
     <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
 
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="personas">
-                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Personas
-            </NavLink>
-        </div>
+        <AuthorizeView>
+            <NotAuthorized>
+                <a class="btn btn-primary" href="/login">Sign Up</a>
+            </NotAuthorized>
 
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="redirect">
-                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Redirigir
-            </NavLink>
-        </div>
+            <Authorized>
+
+                <div class="nav-item px-3">
+                    <h6 style="color:white;">@context.User.Identity?.Name</h6>
+                    <span style="color:white;">@context.User.FindFirst("CUIT")?.Value</span>
+                </div>
+
+                <li><hr class="dropdown-divider"></li>
+
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                        <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
+                    </NavLink>
+                </div>
+
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="personas">
+                        <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Personas
+                    </NavLink>
+                </div>
+
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="redirect">
+                        <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Redirigir
+                    </NavLink>
+                </div>
+
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="logout">
+                        <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Cerrar
+                    </NavLink>
+                </div>
+
+            </Authorized>
+
+        </AuthorizeView>
 
     </nav>
 </div>
 
+@code {
+    [Inject] NavigationManager Navigation { get; set; }
+    [Inject] IHttpContextAccessor HttpContextAccessor { get; set; }
+
+    private async Task Logout()
+    {
+        var httpContext = HttpContextAccessor.HttpContext;
+        if (httpContext != null)
+        {
+            await httpContext.SignOutAsync("Cookies");
+            Navigation.NavigateTo("/login", forceLoad: true);
+        }
+    }
+}

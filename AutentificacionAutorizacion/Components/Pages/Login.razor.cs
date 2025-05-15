@@ -33,7 +33,8 @@ public partial class Login
 
         var claims = new List<Claim>
         {
-            new Claim(ClaimTypes.Name, loginModel.Usuario)
+            new Claim(ClaimTypes.Name, loginModel.Usuario),
+            new Claim("CUIT", "20-523234232-2")
         };
 
         var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
